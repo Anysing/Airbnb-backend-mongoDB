@@ -1,23 +1,23 @@
-const db = require("../utils/databaseUtils");
+const { ObjectId } = require("mongodb");
+const { getDB } = require("../utils/databaseUtils");
 
 module.exports = class Favourites {
+  constructor(houseid) {
+    this.houseid = houseid;
+  }
 
-  static addtofavourite(homeid) {
-    return Favourites.getfavourite().then(([favourites]) => {
-      const isFavourite = favourites.some((fav) => fav.id === Number(homeid));
-      if (isFavourite) {
-        return Promise.resolve()
-      }else {
-        return db.execute("insert into Favourites (id) values (?)", [homeid]);
-      }
-    });
+  save() {
+    const db = getDB();
+    return db.collection("Favourites").insertOne(this);
   }
 
   static getfavourite() {
-    return db.execute("select * from Favourites");
+    const db = getDB();
+    return db.collection("Favourites").find().toArray();
   }
 
   static RemoveFavourite(homeid) {
-    return db.execute("delete from Favourites where id = ?", [homeid]);
+    const db = getDB()
+    return db.collection("Favourites").deleteOne({houseid : homeid})
   }
 };

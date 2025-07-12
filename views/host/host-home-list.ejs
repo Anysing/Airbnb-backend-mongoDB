@@ -26,15 +26,15 @@
 
             <!-- SOLUTION 1: Using inline styles as backup -->
             <div class="flex justify-between mt-4 space-x-2">
-              <a href="/homes/<%= home.id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
+              <a href="/homes/<%= home._id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
                         View Details
                     </button></a>
-              <a href="/host/edit-home/<%= home.id %>?editing=true">
+              <a href="/host/edit-home/<%= home._id %>?editing=true">
                 <button class="flex-1 text-white text-center py-3 px-4 rounded-md transition duration-300 text-sm font-medium" style="background-color: #10b981; border: none;" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10b981'">
                   Edit
                 </button>
               </a>
-                <form action="/host/deletehosthome/<%= home.id %>" method="POST">
+                <form action="/host/deletehosthome/<%= home._id %>" method="POST">
                   <button
                     type="submit"
                     class="flex-1 text-white text-center py-3 px-4 rounded-md transition duration-300 text-sm font-medium"
@@ -44,7 +44,7 @@
                   >
                     Delete
                   </button>
-                  <input type="hidden" name="id" value="<%= home.id %>" />
+                  <input type="hidden" name="id" value="<%= home._id %>" />
                 </form>
             </div>
           </div>

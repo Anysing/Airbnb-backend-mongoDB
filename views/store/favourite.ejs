@@ -11,7 +11,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% Favouritehome.forEach(home => { %>
         <div class="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-10">
-            <img src= <%= home.imageURL %> alt="House Image" class="w-full h-48 object-cover">
+            <img src= "<%= home.imageURL %>" alt="House Image" class="w-full h-48 object-cover">
 
             <div class="p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-2"><%= home.housename %></h3>
@@ -26,7 +26,7 @@
     
                 <!-- Two buttons with same styling as previous -->
                 <div class="flex gap-3 justify-between mt-4 space-x-2">
-                    <a href="/homes/<%= home.id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
+                    <a href="/homes/<%= home._id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
                         View Details
                     </button></a>
                     <form action="/removefavourites" method="POST">
@@ -39,7 +39,7 @@
                       >
                         Remove From Favourite
                       </button>
-                      <input type="hidden" name="id" value="<%= home.id %>" />
+                      <input type="hidden" name="id" value="<%= home._id %>" />
                     </form>
                 </div>
             </div>

@@ -12,12 +12,14 @@ exports.getAddhomes = (req, res, next) => {
 exports.postAddhomes = (req, res, next) => {
   const { housename, price, location, imageURL, description } = req.body;
   const home = new Home(housename, price, location, imageURL, description);
-  home.save();
+  home.save().then(result => {
+    console.log(result);
+  })
   res.redirect("/host/host-homes");
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then(([registeredhome]) => {
+  Home.fetchAll().then(registeredhome => {
     res.render("host/host-home-list", {
       registeredhome: registeredhome,
       pageTitle: "Host Homes",
@@ -30,8 +32,7 @@ exports.getedithome = (req, res, next) => {
   const id = req.params.homeid;
   const editing = req.query.editing === "true";
 
-  Home.HomeByID(id).then(([home]) => {
-    const homebyid = home[0]
+  Home.HomeByID(id).then(homebyid => {
     if (!homebyid) {
       return res.redirect("/host/host-homes");
     }
@@ -47,7 +48,10 @@ exports.getedithome = (req, res, next) => {
 exports.postEdithomes = (req, res, next) => {
   const { id, housename, price, location, imageURL, description } = req.body;
   const home = new Home(housename, price, location, imageURL, description, id);
-  home.save();
+  home.save().then(result => {
+    console.log(result);
+    
+  })
   res.redirect("/host/host-homes");
 };
 
