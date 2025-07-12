@@ -1,0 +1,81 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-xl">
+    <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
+      <%= editing ? 'Edit' : 'Register'%> your home here
+    </h2>
+
+    <form action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST" class="space-y-4">
+      <div>
+        <input type="hidden" name="id" value="<%= editing ? home.id : '' %>">
+        <label class="block text-gray-700 font-semibold mb-2" for="housename">House Name</label>
+        <input
+          type="text"
+          id="housename"
+          name="housename"
+          value="<%= editing ? home.housename : '' %>"
+          placeholder="Enter house name"
+          required
+          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" for="price">Price</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          value="<%= editing ? home.price : '' %>"
+          placeholder="Enter price"
+          required
+          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" for="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value="<%= editing ? home.location : '' %>"
+          placeholder="Enter location"
+          required
+          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" for="imageURL">Image URL</label>
+        <input
+          type="text"
+          id="imageURL"
+          name="imageURL"
+          value="<%= editing ? home.imageURL : '' %>"
+          placeholder="Enter image URL"
+          required
+          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" for="imageURL">Description</label>
+        <textarea
+          name="description"
+          placeholder="Describe your home"
+          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"><%= editing ? home.description : '' %></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-orange-500 text-white font-semibold py-2 rounded-md hover:bg-orange-600 transition duration-300"
+      >
+        <%= editing ? "Update Home" : "Add Home" %>
+      </button>
+    </form>
+  </main>
+</body>
+</html>

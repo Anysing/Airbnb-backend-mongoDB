@@ -1,0 +1,70 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10">
+    <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
+      Here are Your Host homes:
+    </h2>
+
+    <!-- Responsive Grid with proper spacing -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% registeredhome.forEach(home => { %>
+        <div class="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-10">
+          <img src="<%= home.imageURL %>" alt="House Image" class="w-full h-48 object-cover">
+
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-2"><%= home.housename %></h3>
+
+            <p class="text-gray-600 mb-1">
+              <span class="font-semibold">Price:</span> <%= home.price %>
+            </p>
+
+            <p class="text-gray-600 mb-1">
+              <span class="font-semibold">Location:</span> <%= home.location %>
+            </p>
+
+            <!-- SOLUTION 1: Using inline styles as backup -->
+            <div class="flex justify-between mt-4 space-x-2">
+              <a href="/homes/<%= home.id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
+                        View Details
+                    </button></a>
+              <a href="/host/edit-home/<%= home.id %>?editing=true">
+                <button class="flex-1 text-white text-center py-3 px-4 rounded-md transition duration-300 text-sm font-medium" style="background-color: #10b981; border: none;" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10b981'">
+                  Edit
+                </button>
+              </a>
+                <form action="/host/deletehosthome/<%= home.id %>" method="POST">
+                  <button
+                    type="submit"
+                    class="flex-1 text-white text-center py-3 px-4 rounded-md transition duration-300 text-sm font-medium"
+                    style="background-color: red; border: none"
+                    onmouseover="this.style.backgroundColor='red'"
+                    onmouseout="this.style.backgroundColor='red'"
+                  >
+                    Delete
+                  </button>
+                  <input type="hidden" name="id" value="<%= home.id %>" />
+                </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+  </main>
+
+  <!-- SOLUTION 4: Add custom CSS to override any conflicting styles -->
+  <style>
+    .btn-edit {
+      background-color: #10b981 !important;
+      color: white !important;
+      border: none !important;
+    }
+    .btn-edit:hover {
+      background-color: #059669 !important;
+    }
+  </style>
+
+</body>
+</html>
