@@ -10,7 +10,7 @@
     <!-- Responsive Grid with proper spacing -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% registeredhome.forEach(home => { %>
-        <div class="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-10">
+        <div class=" bg-white shadow-lg rounded-lg overflow-hidden mt-10">
             <img src= <%= home.imageURL %> alt="House Image" class="w-full h-48 object-cover">
 
             <div class="p-6">
@@ -25,11 +25,11 @@
                 </p>
     
                 <!-- Two buttons with same styling as previous -->
-                <div class="flex gap-3 justify-between mt-4 space-x-2">
-                    <a href="/homes/<%= home._id %>"><button class="flex-1 bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
+                <div class="flex gap-3 mt-4">
+                    <a href="/homes/<%= home._id %>" class="flex-1"><button class="w-full bg-orange-500 text-white text-center py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 text-sm font-medium">
                         View Details
                     </button></a>
-                    <button class="flex-1 text-white text-center py-3 px-4 rounded-md transition duration-300 text-sm font-medium" style="background-color: #10b981; border: none;" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10b981'">
+                    <button class="flex-1 bg-green-500 text-white text-center py-3 px-4 rounded-md hover:bg-green-600 transition duration-300 text-sm font-medium" style="background-color: #10b981; border: none;" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10b981'">
                         Book
                     </button>
                 </div>

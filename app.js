@@ -4,7 +4,8 @@ const dirpath = require("./utils/pathUtils");
 const userRouter = require("./routes/userRouter");
 const { hostRouter } = require("./routes/hostRouter");
 const errorController = require("./controllers/errors");
-const { mongoclient } = require("./utils/databaseUtils");
+
+const { default: mongoose } = require("mongoose");
 
 const app = express();
 
@@ -19,8 +20,12 @@ app.use(express.static(path.join(dirpath, "public")));
 
 app.use(errorController.PageNotFound);
 
-mongoclient(() => {
+
+const url = "mongodb+srv://ankitgusain:ankitsingh@backend.nyrqzik.mongodb.net/airbnb?retryWrites=true&w=majority&appName=Backend";
+mongoose.connect(url).then(() => {
   app.listen(3001, () => {
     console.log("The server is running on http://localhost:3001");
   });
-});
+}).catch((err) => {
+  console.log("error occured while connecting to database",err);
+})

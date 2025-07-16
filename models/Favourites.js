@@ -1,23 +1,12 @@
-const { ObjectId } = require("mongodb");
-const { getDB } = require("../utils/databaseUtils");
+const mongoose = require("mongoose");
 
-module.exports = class Favourites {
-  constructor(houseid) {
-    this.houseid = houseid;
-  }
+const favouriteSchema = mongoose.Schema({
+  houseid: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Home",
+    unique : true,
+  },
+});
 
-  save() {
-    const db = getDB();
-    return db.collection("Favourites").insertOne(this);
-  }
-
-  static getfavourite() {
-    const db = getDB();
-    return db.collection("Favourites").find().toArray();
-  }
-
-  static RemoveFavourite(homeid) {
-    const db = getDB()
-    return db.collection("Favourites").deleteOne({houseid : homeid})
-  }
-};
+module.exports = mongoose.model("Favourites", favouriteSchema);
