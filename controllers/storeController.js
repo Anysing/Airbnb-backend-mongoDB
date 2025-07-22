@@ -7,6 +7,7 @@ exports.getHomes = (req, res, next) => {
       registeredhome: registeredhome,
       pageTitle: "index page",
       currentPage: "index",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
@@ -17,6 +18,7 @@ exports.getHomelist = (req, res, next) => {
       registeredhome: registeredhome,
       pageTitle: "Registered Home",
       currentPage: "Homes",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
@@ -27,6 +29,7 @@ exports.getbookings = (req, res, next) => {
       registeredhome: registeredhome,
       pageTitle: "Booked Homes",
       currentPage: "bookings",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
@@ -41,6 +44,7 @@ exports.gethomedetails = (req, res, next) => {
         home: homebyid,
         pageTitle: "Home details",
         currentPage: "Homes",
+        isLoggedIn: req.isLoggedIn,
       });
     }
   });
@@ -55,6 +59,7 @@ exports.getfavourite = (req, res, next) => {
         Favouritehome: favouriteshomes,
         pageTitle: "Favourites",
         currentPage: "favourite",
+        isLoggedIn: req.isLoggedIn,
       });
     });
 };
@@ -80,7 +85,7 @@ exports.postAddtoFavourites = (req, res, next) => {
 
 exports.postRemoveFavourites = (req, res, next) => {
   const homeid = req.body.id;
-  Favourites.findOneAndDelete({houseid : homeid})
+  Favourites.findOneAndDelete({ houseid: homeid })
     .then((result) => {
       console.log(result);
     })

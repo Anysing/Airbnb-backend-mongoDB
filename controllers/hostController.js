@@ -1,4 +1,3 @@
-const Favourites = require("../models/Favourites");
 const Home = require("../models/home");
 
 exports.getAddhomes = (req, res, next) => {
@@ -6,24 +5,26 @@ exports.getAddhomes = (req, res, next) => {
     pageTitle: "Add Home Page",
     currentPage: "add-home",
     editing: false,
+    isLoggedIn: req.isLoggedIn,
   });
 };
 
 exports.postAddhomes = (req, res, next) => {
   const { housename, price, location, imageURL, description } = req.body;
-  const home = new Home({housename, price, location, imageURL, description});
-  home.save().then(result => {
-    console.log(result); 
-  })
+  const home = new Home({ housename, price, location, imageURL, description });
+  home.save().then((result) => {
+    console.log(result);
+  });
   res.redirect("/host/host-homes");
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.find().then(registeredhome => {
+  Home.find().then((registeredhome) => {
     res.render("host/host-home-list", {
       registeredhome: registeredhome,
       pageTitle: "Host Homes",
       currentPage: "host-homes",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
@@ -32,7 +33,7 @@ exports.getedithome = (req, res, next) => {
   const id = req.params.homeid;
   const editing = req.query.editing === "true";
 
-  Home.findById(id).then(homebyid => {
+  Home.findById(id).then((homebyid) => {
     if (!homebyid) {
       return res.redirect("/host/host-homes");
     }
@@ -41,6 +42,7 @@ exports.getedithome = (req, res, next) => {
       pageTitle: "Edit your Home",
       currentPage: "host-homes",
       editing: editing,
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
@@ -48,26 +50,31 @@ exports.getedithome = (req, res, next) => {
 exports.postEdithomes = (req, res, next) => {
   const { id, housename, price, location, imageURL, description } = req.body;
   // const home = new Home({housename, price, location, imageURL, description, id});
-  Home.findById(id).then((home) => {
-    home.housename = housename;
-    home.price = price;
-    home.location = location;
-    home.imageURL = imageURL;
-    home.description = description;
-    home.save().then(result => {
-      console.log(result);
-    }).catch(err => {
-      console.log(err);
+  Home.findById(id)
+    .then((home) => {
+      home.housename = housename;
+      home.price = price;
+      home.location = location;
+      home.imageURL = imageURL;
+      home.description = description;
+      home
+        .save()
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      res.redirect("/host/host-homes");
     })
-    res.redirect("/host/host-homes");
-  }).catch(err => {
-    console.log(err);
-  }) 
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.postDeletehosthome = (req, res, next) => {
   const homeid = req.params.homeid;
-  Home.findByIdAndDelete(homeid).then(() =>{
+  Home.findByIdAndDelete(homeid).then(() => {
     res.redirect("/host/host-homes");
-  })
+  });
 };
