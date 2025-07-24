@@ -107,7 +107,7 @@ exports.postSignup = [
         return user.save();
       })
       .then(() => {
-        res.redirect("/login");
+        res.redirect("/");
       })
       .catch((err) => {
         return res.status(422).render("auth/SignUp", {
@@ -125,6 +125,16 @@ exports.postSignup = [
           },
         });
       });
+      req.session.isLoggedIn = true;
+      req.session.user = {
+        firstName,
+        lastName,
+        email,
+        password,
+        userType,
+      };
+      req.session.save();
+      res.redirect("/");
   },
 ];
 
@@ -145,9 +155,10 @@ exports.postLogin = [
     .withMessage("Password must contain at least one number")
     .matches(/[@$!%*?&]/) // Special character
     .withMessage("Password must contain at least one special character"),
-  (req, res, next) => {
-    // res.cookie("isLoggedIn",true)
-    req.session.isLoggedIn = true;
+
+  async (req, res, next) => {
+    const { email, password } = req.body;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).render("auth/login", {
@@ -160,6 +171,37 @@ exports.postLogin = [
         },
       });
     }
+
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(422).render("auth/login", {
+        pageTitle: "Login",
+        currentPage: "login",
+        isLoggedIn: false,
+        errorMessage: ["Invalid email or password."],
+        oldInput: {
+          email,
+        },
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(422).render("auth/login", {
+        pageTitle: "Login",
+        currentPage: "login",
+        isLoggedIn: false,
+        errorMessage: ["Invalid email or password."],
+        oldInput: {
+          email,
+        },
+      });
+    }
+
+    req.session.isLoggedIn = true;
+    req.session.user = user;
+    await req.session.save()
+
     res.redirect("/");
   },
 ];
