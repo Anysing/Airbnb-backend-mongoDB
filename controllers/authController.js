@@ -7,6 +7,7 @@ exports.getLogin = (req, res, next) => {
     pageTitle: "Login",
     currentPage: "login",
     isLoggedIn: false,
+    user : {},
   });
 };
 
@@ -22,6 +23,7 @@ exports.getSignup = (req, res, next) => {
       email: "",
       userType: "",
     },
+    user : {},
   });
 };
 
@@ -91,6 +93,7 @@ exports.postSignup = [
           email,
           userType,
         },
+        user : {},
       });
     }
 
@@ -123,6 +126,7 @@ exports.postSignup = [
             email,
             userType,
           },
+          user : {},
         });
       });
       req.session.isLoggedIn = true;
@@ -169,6 +173,7 @@ exports.postLogin = [
         oldInput: {
           email: req.body.email,
         },
+        user : {},
       });
     }
 
@@ -182,6 +187,7 @@ exports.postLogin = [
         oldInput: {
           email,
         },
+        user : {},
       });
     }
 
@@ -195,6 +201,7 @@ exports.postLogin = [
         oldInput: {
           email,
         },
+        user : {},
       });
     }
 

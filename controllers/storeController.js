@@ -1,5 +1,6 @@
-const Favourites = require("../models/Favourites");
+
 const Home = require("../models/home");
+const User = require("../models/User");
 
 exports.getHomes = (req, res, next) => {
   Home.find().then((registeredhome) => {
@@ -8,6 +9,7 @@ exports.getHomes = (req, res, next) => {
       pageTitle: "index page",
       currentPage: "index",
       isLoggedIn: req.isLoggedIn,
+      user : req.session.user,
     });
   });
 };
@@ -19,6 +21,7 @@ exports.getHomelist = (req, res, next) => {
       pageTitle: "Registered Home",
       currentPage: "Homes",
       isLoggedIn: req.isLoggedIn,
+      user : req.session.user,
     });
   });
 };
@@ -30,6 +33,7 @@ exports.getbookings = (req, res, next) => {
       pageTitle: "Booked Homes",
       currentPage: "bookings",
       isLoggedIn: req.isLoggedIn,
+      user : req.session.user,
     });
   });
 };
@@ -45,54 +49,43 @@ exports.gethomedetails = (req, res, next) => {
         pageTitle: "Home details",
         currentPage: "Homes",
         isLoggedIn: req.isLoggedIn,
+        user : req.session.user,
       });
     }
   });
 };
 
-exports.getfavourite = (req, res, next) => {
-  Favourites.find()
-    .populate("houseid")
-    .then((favourites) => {
-      const favouriteshomes = favourites.map((fav) => fav.houseid);
-      res.render("store/favourite", {
-        Favouritehome: favouriteshomes,
+exports.getfavourite = async (req, res, next) => {
+
+  const userId = req.session.user._id;
+  const user = await User.findById(userId).populate("favourites");
+  res.render("store/favourite", {
+        Favouritehome: user.favourites,
         pageTitle: "Favourites",
         currentPage: "favourite",
         isLoggedIn: req.isLoggedIn,
+        user : req.session.user,
       });
-    });
 };
 
-exports.postAddtoFavourites = (req, res, next) => {
+exports.postAddtoFavourites = async (req, res, next) => {
   const homeid = req.body.id;
-  Favourites.findOne({ houseid: homeid })
-    .then((existingfav) => {
-      if (existingfav) {
-        return res.redirect("/favourite");
-      } else {
-        const fav = new Favourites({ houseid: homeid });
-        return fav.save();
-      }
-    })
-    .then(() => {
-      return res.redirect("/favourite");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  if(!user.favourites.includes(homeid)) {
+    user.favourites.push(homeid);
+    await user.save()
+  }
+  res.redirect("/favourite");
 };
 
-exports.postRemoveFavourites = (req, res, next) => {
+exports.postRemoveFavourites = async (req, res, next) => {
   const homeid = req.body.id;
-  Favourites.findOneAndDelete({ houseid: homeid })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.log("Error occured during Remove from favourite", error);
-    })
-    .finally(() => {
-      res.redirect("/favourite");
-    });
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  if(user.favourites.includes(homeid)) {
+    user.favourites = user.favourites.filter((fav) => fav != homeid);
+    await user.save();
+  }
+  res.redirect("/favourite");
 };
