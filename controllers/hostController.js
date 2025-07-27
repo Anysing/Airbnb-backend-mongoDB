@@ -1,4 +1,5 @@
 const Home = require("../models/home");
+const fs = require("fs");
 
 exports.getAddhomes = (req, res, next) => {
   res.render("host/edit-home", {
@@ -11,7 +12,10 @@ exports.getAddhomes = (req, res, next) => {
 };
 
 exports.postAddhomes = (req, res, next) => {
-  const { housename, price, location, imageURL, description } = req.body;
+  const { housename, price, location, description } = req.body;
+  // console.log(housename, price, location, description);
+  // console.log(req.file);
+  const imageURL = req.file.path;
   const home = new Home({ housename, price, location, imageURL, description });
   home.save().then((result) => {
     console.log(result);
@@ -51,15 +55,23 @@ exports.getedithome = (req, res, next) => {
 };
 
 exports.postEdithomes = (req, res, next) => {
-  const { id, housename, price, location, imageURL, description } = req.body;
+  const { id, housename, price, location, description } = req.body;
   // const home = new Home({housename, price, location, imageURL, description, id});
   Home.findById(id)
     .then((home) => {
       home.housename = housename;
       home.price = price;
       home.location = location;
-      home.imageURL = imageURL;
       home.description = description;
+
+      if (req.file) {
+        fs.unlink(home.imageURL, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+        home.imageURL = req.file.path; 
+      }
       home
         .save()
         .then((result) => {
