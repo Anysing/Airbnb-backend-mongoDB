@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"No tests yet\" && exit 0",
-    "dev:server": "node app.js",
+    "dev:server": "nodemon app.js",
     "dev:tailwind": "npx tailwindcss -i ./views/input.css -o ./public/output.css --watch",
-    "start": "concurrently \"npm run dev:server\" \"npm run dev:tailwind\""
+    "start": "node app.js"
   },
   "author": "ankit singh gusain",
   "license": "ISC",
