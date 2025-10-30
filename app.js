@@ -14,6 +14,7 @@ const url =
   "mongodb+srv://ankitgusain:ankitsingh@backend.nyrqzik.mongodb.net/airbnb?retryWrites=true&w=majority&appName=Backend";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -81,7 +82,7 @@ app.use(errorController.PageNotFound);
 mongoose
   .connect(url)
   .then(() => {
-    app.listen(3001, () => {
+    app.listen(port, () => {
       console.log("The server is running on http://localhost:3001");
     });
   })
